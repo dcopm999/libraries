@@ -14,3 +14,9 @@ Quick start
      'libraries',
      )
      
+Coverage
+--------
+
+1. coverage setup.py tests
+2. coverage xml
+3. pylint --disable=W1202 --output-format=parseable --reports=no module > pylint.log

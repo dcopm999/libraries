@@ -7,3 +7,5 @@ db.sqlite3
 build/
 dist/
 pharmcrm_libraries.egg-info/
+coverage.xml
+pylint.log

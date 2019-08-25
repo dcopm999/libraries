@@ -9,7 +9,7 @@ with open(os.path.join(os.path.dirname(__file__), 'README.rst')) as readme:
     setup(
         name='PharmCRM-libraries',
         version='0.1',
-        packages=['libraries'],
+        packages=['pharmcrm_libraries'],
         include_package_data=True,
         license='BSD License',
         description='Набор стандартных библиотек для PharmCRM',
@@ -17,6 +17,9 @@ with open(os.path.join(os.path.dirname(__file__), 'README.rst')) as readme:
         url='http://crm.atm.uz/',
         author='Pavel Tanchev',
         author_email='dcopm999@gmail.com',
+        install_requires=[
+            "aiohttp",
+        ],
         classifiers=[
             'Environment :: Web Environment',
             'Framework :: Django',

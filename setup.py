@@ -9,7 +9,7 @@ with open(os.path.join(os.path.dirname(__file__), 'README.rst')) as readme:
     setup(
         name='PharmCRM-libraries',
         version='0.1',
-        packages=['pharmcrm_libraries'],
+        packages=['libraries'],
         include_package_data=True,
         license='BSD License',
         description='Набор стандартных библиотек для PharmCRM',

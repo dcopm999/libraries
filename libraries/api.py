@@ -13,12 +13,12 @@ async def get(**kwargs) -> dict:
     Method GET request
     """
     async with aiohttp.ClientSession() as session:
-        LOGGER.debug("переданные параметры запроса: %s" % kwargs)
+        LOGGER.debug("переданные параметры запроса: {}".format(kwargs))
         async with session.get(**kwargs) as response:
             result = await response.json()
             LOGGER.debug(response.status)
-            LOGGER.debug("url запроса: %s" % response.url)
-            LOGGER.debug("результат ответа от сервера: %s" % result)
+            LOGGER.debug("url запроса: {}".format(response.url))
+            LOGGER.debug("результат ответа от сервера: {}".format(result))
             return result
 
 

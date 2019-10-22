@@ -7,12 +7,12 @@ with open(os.path.join(os.path.dirname(__file__), 'README.rst')) as readme:
     os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
     setup(
-        name='PharmCRM-libraries',
+        name='libraries',
         version='0.1',
         packages=['libraries'],
         include_package_data=True,
         license='BSD License',
-        description='Набор стандартных библиотек для PharmCRM',
+        description='Набор стандартных библиотек',
         long_description=README,
         url='http://crm.atm.uz/',
         author='Pavel Tanchev',

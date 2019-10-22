@@ -1,8 +1,8 @@
 =====
-PharmCRM libraries
+libraries
 =====
 
-Набор базовых библиотке для PharmCRM
+Набор 
 
 Quick start
 -----------
@@ -19,4 +19,4 @@ Coverage
 
 1. coverage setup.py tests
 2. coverage xml
-3. pylint --disable=W1202 --output-format=parseable --reports=no module > pylint.log
+3. pylint --disable=W1202 --output-format=parseable --reports=no libraries > pylint.log

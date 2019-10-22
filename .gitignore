@@ -6,6 +6,34 @@ db.sqlite3
 .#*
 build/
 dist/
-pharmcrm_libraries.egg-info/
 coverage.xml
 pylint.log
+
+
+*#
+*~
+*.pyc
+__pycache__
+static/
+profiles.egg-info/
+.coverage
+pylint.log
+
+# templates
+templates/*
+!templates/base.html
+!templates/left_menu.html
+!templates/page_*
+
+# media
+media/
+
+# sqlite
+db.sqlite3
+
+# migrations
+**/migrations/**
+!**/migrations/__init__.py
+
+# sdist
+libraries.egg-info/

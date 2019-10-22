@@ -1,9 +1,9 @@
 """
-Синтаксический сахар
+Паттерны
 """
 
 
-class Singleton:
+class Singleton:  # pylint: disable=too-few-public-methods
     def __new__(cls):
         if not hasattr(cls, "instance"):
             cls.instance = super(Singleton, cls).__new__(cls)
@@ -11,6 +11,8 @@ class Singleton:
 
 
 class ItemManager:
+    items = list()
+
     def __len__(self):
         return len(self.items)
 
@@ -20,8 +22,8 @@ class ItemManager:
         except KeyError:
             return None
 
-    def __setitem__(self, index):
-        return self.item[index]
+    def __setitem__(self, index, value):
+        self.items[index] = value
 
     def __iter__(self):
         return map(lambda item: item, self.items)

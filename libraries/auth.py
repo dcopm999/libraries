@@ -9,7 +9,10 @@ class BaseAuth(Singleton):
     TODO
     '''
     def __init__(self):
-        self._DATA = Registration.objects.all()[0]
+        try:
+            self._DATA = Registration.objects.all()[0]
+        except IndexError:
+            raise IndexError("Не задан регистрационный ключ")
 
     @property
     def get_token(self):

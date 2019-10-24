@@ -3,6 +3,7 @@
 """
 import logging
 import aiohttp
+from aiohttp.client_exceptions import ContentTypeError
 
 
 LOGGER = logging.getLogger(__name__)
@@ -49,7 +50,10 @@ async def put(**kwargs) -> dict:
 async def delete(**kwargs) -> dict:
     async with aiohttp.ClientSession() as session:
         async with session.delete(**kwargs) as response:
-            result = await response.json()
+            try:
+                result = await response.json()
+            except ContentTypeError:
+                result = await response.text()
             LOGGER.debug(result)
             return result
 

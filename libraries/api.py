@@ -30,7 +30,10 @@ async def post(**kwargs) -> dict:
     async with aiohttp.ClientSession() as session:
         LOGGER.debug(kwargs)
         async with session.post(**kwargs) as response:
-            result = await response.json()
+            try:
+                result = await response.json()
+            except ContentTypeError:
+                result = await response.text()
             LOGGER.debug(response.status)
             return result
 

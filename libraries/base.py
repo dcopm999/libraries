@@ -68,3 +68,11 @@ class BaseManager(ItemManager):
             data=json.dumps(data)
         ))
         return result
+
+    def update_or_create(self, data):
+        if True in [data.get('uuid') in item.get('uuid') for item in self.items]:
+            LOGGER.info('Обновление записи')
+            return self.update_item(data)
+        else:
+            LOGGER.info('Создание записи')
+            return self.create_item(data)

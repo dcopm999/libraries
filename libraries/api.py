@@ -16,12 +16,16 @@ async def get(**kwargs) -> dict:
     async with aiohttp.ClientSession() as session:
         LOGGER.debug("переданные параметры запроса: {}".format(kwargs))
         async with session.get(**kwargs) as response:
-            result = await response.json()
-            LOGGER.debug(response.status)
+            if response.status == 200:
+                result = await response.json()
+            elif response.status in [item for item in range(400, 499)]:
+                result = await response.json()
+            else:
+                result = None
             LOGGER.debug("url запроса: {}".format(response.url))
+            LOGGER.debug("код ответа: {}".format(response.status))
             LOGGER.debug("результат ответа от сервера: {}".format(result))
-            return result
-
+            return {'code': response.status, 'result': result}
 
 async def post(**kwargs) -> dict:
     """
@@ -30,13 +34,16 @@ async def post(**kwargs) -> dict:
     async with aiohttp.ClientSession() as session:
         LOGGER.debug(kwargs)
         async with session.post(**kwargs) as response:
-            try:
+            if response.status == 200:
                 result = await response.json()
-            except ContentTypeError:
-                result = await response.text()
-            LOGGER.debug(response.status)
-            return result
-
+            elif response.status in [item for item in range(400, 499)]:
+                result = await response.json()
+            else:
+                result = None
+            LOGGER.debug("url запроса: {}".format(response.url))
+            LOGGER.debug("код ответа: {}".format(response.status))
+            LOGGER.debug("результат ответа от сервера: {}".format(result))
+            return {'code': response.status, 'result': result}
 
 async def put(**kwargs) -> dict:
     """
@@ -45,24 +52,30 @@ async def put(**kwargs) -> dict:
     async with aiohttp.ClientSession() as session:
         LOGGER.debug(kwargs)
         async with session.put(**kwargs) as response:
-            try:
+            if response.status == 200:
                 result = await response.json()
-            except ContentTypeError:
-                result = await response.text()
-            LOGGER.debug(result)
-            return result
-
+            elif response.status in [item for item in range(400, 499)]:
+               result = await response.json()
+            else:
+                result = None
+            LOGGER.debug("url запроса: {}".format(response.url))
+            LOGGER.debug("код ответа: {}".format(response.status))
+            LOGGER.debug("результат ответа от сервера: {}".format(result))
+            return {'code': response.status, 'result': result}
 
 async def delete(**kwargs) -> dict:
     async with aiohttp.ClientSession() as session:
         async with session.delete(**kwargs) as response:
-            try:
+            if response.status == 200:
                 result = await response.json()
-            except ContentTypeError:
-                result = await response.text()
-            LOGGER.debug(result)
-            return result
-
+            elif response.status in [item for item in range(400, 499)]:
+               result = await response.json()
+            else:
+                result = None
+            LOGGER.debug("url запроса: {}".format(response.url))
+            LOGGER.debug("код ответа: {}".format(response.status))
+            LOGGER.debug("результат ответа от сервера: {}".format(result))
+            return {'code': response.status, 'result': result}
 
 async def head(**kwargs) -> dict:
     """

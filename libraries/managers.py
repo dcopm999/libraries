@@ -4,4 +4,4 @@ from libraries.utils import get_token
 
 
 class Manager(BaseManager):
-    URI = '/api/hotel/hotel/'
+    URI = '/api/address/country/'

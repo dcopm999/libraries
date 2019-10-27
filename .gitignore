@@ -37,3 +37,8 @@ db.sqlite3
 
 # sdist
 libraries.egg-info/
+
+# environmant
+venv/
+env/
+.vscode/

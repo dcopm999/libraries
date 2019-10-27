@@ -13,11 +13,8 @@ LOGGER = logging.getLogger(__name__)
 class BaseManager(ItemManager):
     """
     Базовый класс
-    self.URL нужно задавать в виде параметра в наследнике
+    self.URL можно задавать в виде параметра в наследнике
     self.URI нужно задавать в виде параметра в наследнике
-    self.command:
-        (нужно задавать в виде параметра в наследнике)
-         имеет значения 'get', 'post'
     """
     def __init__(self):
         '''
@@ -29,9 +26,10 @@ class BaseManager(ItemManager):
         self.headers = {'Content-Type': 'application/json'}
         self.headers['Authorization'] = 'token {}'.format(self.TOKEN)
         self.ssl = False
+        self.code = 0
         self.items = self.get_list()
 
-    def get_list(self):
+    def get_list(self) -> list:
         LOGGER.debug("Выполняем get запрос")
         result = asyncio.run(api.get(
             url="{0}{1}".format(self.URL, self.URI),
@@ -39,9 +37,10 @@ class BaseManager(ItemManager):
             headers=self.headers,
             #params=self.params
         ))
-        return result
+        self.code = result.get('code')
+        return result.get('result')
 
-    def create_item(self, data):
+    def create_item(self, data) -> list:
         LOGGER.debug("Выполняем post запрос")
         result = asyncio.run(api.post(
             url="{0}{1}?format=json".format(self.URL, self.URI),
@@ -49,30 +48,38 @@ class BaseManager(ItemManager):
             headers=self.headers,
             data=json.dumps(data)
         ))
-        return result
+        self.code = result.get('code')
+        self.items = self.get_list()
+        return result.get('result')
 
-    def update_item(self, data):
+    def update_item(self, data) -> list:
         result = asyncio.run(api.put(
             url="{0}{1}{2}/?format=json".format(self.URL, self.URI, data['uuid']),
             ssl=self.ssl,
             headers=self.headers,
             data=json.dumps(data)
         ))
-        return result
+        self.code = result.get('code')
+        self.items = self.get_list()
+        return result.get('result')
 
-    def delete_item(self, data):
+    def delete_item(self, data) -> list:
         result = asyncio.run(api.delete(
             url="{0}{1}{2}".format(self.URL, self.URI, data['uuid']),
             ssl=self.ssl,
             headers=self.headers,
             data=json.dumps(data)
         ))
-        return result
+        self.code = result.get('code')
+        return result.get('result')
 
-    def update_or_create(self, data):
+    def update_or_create(self, data) -> list:
+        self.items = self.get_list()
         if True in [data.get('uuid') in item.get('uuid') for item in self.items]:
             LOGGER.info('Обновление записи')
-            return self.update_item(data)
+            result = self.update_item(data)
         else:
             LOGGER.info('Создание записи')
-            return self.create_item(data)
+            result = self.create_item(data)
+        self.items = self.get_list()
+        return result

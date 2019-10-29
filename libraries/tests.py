@@ -36,5 +36,10 @@ class BaseManagerTestCase(TestCase):
         self.manager.update_or_create(self.item)
         self.assertEqual(self.manager.code, 200)
 
+    def test_get_item_by_uuid(self):
+        self.manager.update_or_create(self.item)
+        self.manager.get_item_by_uuid(self.item['uuid'])
+        self.assertEqual(self.manager.code, 200)
+
     def tearDown(self):
         self.manager.delete_item(self.item)

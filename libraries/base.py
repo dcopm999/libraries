@@ -30,12 +30,24 @@ class BaseManager(ItemManager):
         self.items = self.get_list()
 
     def get_list(self) -> list:
+        '''
+        Возвращает список элеметов API
+        '''
         LOGGER.debug("Выполняем get запрос")
         result = asyncio.run(api.get(
             url="{0}{1}".format(self.URL, self.URI),
             ssl=self.ssl,
             headers=self.headers,
             #params=self.params
+        ))
+        self.code = result.get('code')
+        return result.get('result')
+
+    def get_item_by_uuid(self, uuid):
+        LOGGER.debug("Выполняем get запрос")
+        result = asyncio.run(api.get(
+            url="{0}{1}{2}/?format=json".format(self.URL, self.URI, uuid),
+            ssl=self.ssl
         ))
         self.code = result.get('code')
         return result.get('result')

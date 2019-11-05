@@ -47,7 +47,8 @@ class BaseManager(ItemManager):
         LOGGER.debug("Выполняем get запрос")
         result = asyncio.run(api.get(
             url="{0}{1}{2}/?format=json".format(self.URL, self.URI, uuid),
-            ssl=self.ssl
+            ssl=self.ssl,
+            headers=self.headers,
         ))
         self.code = result.get('code')
         return result.get('result')

@@ -43,7 +43,7 @@ class BaseManager(ItemManager):
         self.code = result.get('code')
         return result.get('result')
 
-    def get_item_by_uuid(self, uuid):
+    def get_item_by_uuid(self, uuid) -> dict:
         LOGGER.debug("Выполняем get запрос")
         result = asyncio.run(api.get(
             url="{0}{1}{2}/?format=json".format(self.URL, self.URI, uuid),
@@ -53,7 +53,7 @@ class BaseManager(ItemManager):
         self.code = result.get('code')
         return result.get('result')
 
-    def create_item(self, data) -> list:
+    def create_item(self, data) -> dict:
         LOGGER.debug("Выполняем post запрос")
         result = asyncio.run(api.post(
             url="{0}{1}?format=json".format(self.URL, self.URI),
@@ -65,7 +65,7 @@ class BaseManager(ItemManager):
         self.items = self.get_list()
         return result.get('result')
 
-    def update_item(self, data) -> list:
+    def update_item(self, data) -> dict:
         result = asyncio.run(api.put(
             url="{0}{1}{2}/?format=json".format(self.URL, self.URI, data['uuid']),
             ssl=self.ssl,
@@ -76,7 +76,7 @@ class BaseManager(ItemManager):
         self.items = self.get_list()
         return result.get('result')
 
-    def delete_item(self, data) -> list:
+    def delete_item(self, data) -> dict:
         result = asyncio.run(api.delete(
             url="{0}{1}{2}".format(self.URL, self.URI, data['uuid']),
             ssl=self.ssl,
@@ -86,7 +86,7 @@ class BaseManager(ItemManager):
         self.code = result.get('code')
         return result.get('result')
 
-    def update_or_create(self, data) -> list:
+    def update_or_create(self, data) -> dict:
         self.items = self.get_list()
         if True in [data.get('uuid') in item.get('uuid') for item in self.items]:
             LOGGER.info('Обновление записи')

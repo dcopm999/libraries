@@ -3,7 +3,6 @@
 """
 import logging
 import aiohttp
-from aiohttp.client_exceptions import ContentTypeError
 
 
 LOGGER = logging.getLogger(__name__)
@@ -20,6 +19,7 @@ async def get(**kwargs) -> dict:
                 result = await response.json()
             elif response.status in [item for item in range(400, 499)]:
                 result = await response.json()
+                raise Exception(f'code: {response.status}, msg: {result}')
             else:
                 result = None
             LOGGER.debug("url запроса: {}".format(response.url))
@@ -38,6 +38,7 @@ async def post(**kwargs) -> dict:
                 result = await response.json()
             elif response.status in [item for item in range(400, 499)]:
                 result = await response.json()
+                raise Exception(f'code: {response.status}, msg: {result}')
             else:
                 result = None
             LOGGER.debug("url запроса: {}".format(response.url))
@@ -56,6 +57,7 @@ async def put(**kwargs) -> dict:
                 result = await response.json()
             elif response.status in [item for item in range(400, 499)]:
                result = await response.json()
+               raise Exception(f'code: {response.status}, msg: {result}')
             else:
                 result = None
             LOGGER.debug("url запроса: {}".format(response.url))

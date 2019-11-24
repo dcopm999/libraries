@@ -1,3 +1,7 @@
+'''
+package: libraries
+description: Классы авторизации
+'''
 from libraries.patterns import Singleton
 
 from libraries.models import Registration
@@ -10,14 +14,20 @@ class BaseAuth(Singleton):
     '''
     def __init__(self):
         try:
-            self._DATA = Registration.objects.all()[0]
+            self._data = Registration.objects.all()[0]
         except IndexError:
             raise IndexError("Не задан регистрационный ключ")
 
     @property
     def get_token(self):
-        return self._DATA.token
+        '''
+        Из Registration возвращает token подключения
+        '''
+        return self._data.token
 
     @property
     def get_host(self):
-        return self._DATA.host
+        '''
+        Из Registration возвращает имя хоста для подключения
+        '''
+        return self._data.host

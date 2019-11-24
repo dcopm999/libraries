@@ -1,2 +1,7 @@
 include README.rst
-recursive-include libraries/migrations/ *.py
+include MANIFEST.in
+include libraries/tests.py
+include libraries/migrations/__init__.py
+
+global-exclude __pycache__
+global-exclude *.py[co]

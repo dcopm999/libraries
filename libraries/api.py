@@ -1,5 +1,6 @@
 """
-Модуль с реализацией aiohttp клиента
+package: libraries
+description: Модуль с реализацией aiohttp клиента
 """
 import logging
 import aiohttp
@@ -13,19 +14,20 @@ async def get(**kwargs) -> dict:
     Method GET request
     """
     async with aiohttp.ClientSession() as session:
-        LOGGER.debug("переданные параметры запроса: {}".format(kwargs))
+        LOGGER.debug("переданные параметры запроса: %s", kwargs)
         async with session.get(**kwargs) as response:
             if response.status == 200:
                 result = await response.json()
-            elif response.status in [item for item in range(400, 499)]:
+            elif response.status in list(range(400, 499)):
                 result = await response.json()
                 raise Exception(f'code: {response.status}, msg: {result}')
             else:
                 result = None
-            LOGGER.debug("url запроса: {}".format(response.url))
-            LOGGER.debug("код ответа: {}".format(response.status))
-            LOGGER.debug("результат ответа от сервера: {}".format(result))
+            LOGGER.debug("url запроса: %s", response.url)
+            LOGGER.debug("код ответа: %d", response.status)
+            LOGGER.debug("результат ответа от сервера: %s", result)
             return {'code': response.status, 'result': result}
+
 
 async def post(**kwargs) -> dict:
     """
@@ -36,15 +38,16 @@ async def post(**kwargs) -> dict:
         async with session.post(**kwargs) as response:
             if response.status == 200:
                 result = await response.json()
-            elif response.status in [item for item in range(400, 499)]:
+            elif response.status in list(range(400, 499)):
                 result = await response.json()
                 raise Exception(f'code: {response.status}, msg: {result}')
             else:
                 result = None
-            LOGGER.debug("url запроса: {}".format(response.url))
-            LOGGER.debug("код ответа: {}".format(response.status))
-            LOGGER.debug("результат ответа от сервера: {}".format(result))
+            LOGGER.debug("url запроса: %s", response.url)
+            LOGGER.debug("код ответа: %d", response.status)
+            LOGGER.debug("результат ответа от сервера: %s", result)
             return {'code': response.status, 'result': result}
+
 
 async def put(**kwargs) -> dict:
     """
@@ -55,29 +58,34 @@ async def put(**kwargs) -> dict:
         async with session.put(**kwargs) as response:
             if response.status == 200:
                 result = await response.json()
-            elif response.status in [item for item in range(400, 499)]:
-               result = await response.json()
-               raise Exception(f'code: {response.status}, msg: {result}')
+            elif response.status in list(range(400, 499)):
+                result = await response.json()
+                raise Exception(f'code: {response.status}, msg: {result}')
             else:
                 result = None
-            LOGGER.debug("url запроса: {}".format(response.url))
-            LOGGER.debug("код ответа: {}".format(response.status))
-            LOGGER.debug("результат ответа от сервера: {}".format(result))
+            LOGGER.debug("url запроса: %s", response.url)
+            LOGGER.debug("код ответа: %d", response.status)
+            LOGGER.debug("результат ответа от сервера: %s", result)
             return {'code': response.status, 'result': result}
 
+
 async def delete(**kwargs) -> dict:
+    '''
+    Method delete request
+    '''
     async with aiohttp.ClientSession() as session:
         async with session.delete(**kwargs) as response:
             if response.status == 200:
                 result = await response.json()
-            elif response.status in [item for item in range(400, 499)]:
-               result = await response.json()
+            elif response.status in list(range(400, 499)):
+                result = await response.json()
             else:
                 result = None
-            LOGGER.debug("url запроса: {}".format(response.url))
-            LOGGER.debug("код ответа: {}".format(response.status))
-            LOGGER.debug("результат ответа от сервера: {}".format(result))
+            LOGGER.debug("url запроса: %s", response.url)
+            LOGGER.debug("код ответа: %d", response.status)
+            LOGGER.debug("результат ответа от сервера: %s", result)
             return {'code': response.status, 'result': result}
+
 
 async def head(**kwargs) -> dict:
     """

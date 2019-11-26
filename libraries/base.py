@@ -28,7 +28,6 @@ class BaseManager(ItemManager):
         self.ssl = False
         self.code = 0
         self.params = dict()
-        self.items = self.get_list()
 
     def get_list(self) -> list:
         '''

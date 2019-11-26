@@ -27,6 +27,7 @@ class BaseManager(ItemManager):
         self.headers['Authorization'] = 'token {}'.format(self.TOKEN)
         self.ssl = False
         self.code = 0
+        self.params = dict()
         self.items = self.get_list()
 
     def get_list(self) -> list:
@@ -38,7 +39,7 @@ class BaseManager(ItemManager):
             url="{0}{1}".format(self.URL, self.URI),
             ssl=self.ssl,
             headers=self.headers,
-            #params=self.params
+            params=self.params
         ))
         self.code = result.get('code')
         return result.get('result')

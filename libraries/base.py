@@ -123,17 +123,20 @@ class BaseManager(ItemManager):
 class BaseSearchManager(BaseManager):
     '''
     Менеджер взаимодействия c поисковиком
+    URI: путь в API к определенному поиску
+    AGENT_UUID: uuid агента для проверки подписок в subscribe
     '''
     URI = '/api/search/room/'
+    AGENT_UUID = '50834ad3-cffa-4d97-ba0a-7c8145edced0'
 
-    def search_param(self, params) -> None:
+    def search_param(self, data) -> None:
         '''
-        params: dict from form.cleaned_data
+        data: dict from form.cleaned_data
         '''
         # Инициализируем переменную результата
         result = dict()
         # Итерация по словарю с возвращающая ключ,значение
-        for key, values in params.items():
+        for key, values in data.items():
             # если тип занчения == список
             if isinstance(values, list):
                 # Изменяем имя ключа для поиска в ElasticSearch по списку
@@ -154,3 +157,10 @@ class BaseSearchManager(BaseManager):
             if isinstance(values, str): # ксди тип значения == str
                 result[key] = values # присвоение значения в исходном виде
         self.params = result
+
+    def _get_subscribed_hotels(self):
+        '''
+        Получение списка uuid отелей на конорых подписан агент
+        return: list
+        '''
+        pass

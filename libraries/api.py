@@ -18,6 +18,13 @@ async def get(**kwargs) -> dict:
         async with session.get(**kwargs) as response:
             if response.status == 200:
                 result = await response.json()
+            elif response.status in list(range(400, 499)):
+                result = response
+                LOGGER.error(f'url: {response}, code: {response.status}, msg: {result}')
+                raise ClientResponseError(
+                    request_info=response.request_info,
+                    history=response.history, status=response.status,
+                    message=response, headers=response.headers)
             else:
                 result = None
             LOGGER.debug("url запроса: %s", response.url)
@@ -35,6 +42,13 @@ async def post(**kwargs) -> dict:
         async with session.post(**kwargs) as response:
             if response.status == 200:
                 result = await response.json()
+            elif response.status in list(range(400, 499)):
+                result = response
+                LOGGER.error(f'url: {response}, code: {response.status}, msg: {result}')
+                raise ClientResponseError(
+                    request_info=response.request_info,
+                    history=response.history, status=response.status,
+                    message=response, headers=response.headers)
             else:
                 result = None
             LOGGER.debug("url запроса: %s", response.url)
@@ -52,6 +66,13 @@ async def put(**kwargs) -> dict:
         async with session.put(**kwargs) as response:
             if response.status == 200:
                 result = await response.json()
+            elif response.status in list(range(400, 499)):
+                result = response
+                LOGGER.error(f'url: {response}, code: {response.status}, msg: {result}')
+                raise ClientResponseError(
+                    request_info=response.request_info,
+                    history=response.history, status=response.status,
+                    message=response, headers=response.headers)
             else:
                 result = None
             LOGGER.debug("url запроса: %s", response.url)
@@ -68,6 +89,13 @@ async def delete(**kwargs) -> dict:
         async with session.delete(**kwargs) as response:
             if response.status == 200:
                 result = await response.json()
+            elif response.status in list(range(400, 499)):
+                result = response
+                LOGGER.error(f'url: {response}, code: {response.status}, msg: {result}')
+                raise ClientResponseError(
+                    request_info=response.request_info,
+                    history=response.history, status=response.status,
+                    message=response, headers=response.headers)
             else:
                 result = None
             LOGGER.debug("url запроса: %s", response.url)

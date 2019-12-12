@@ -16,5 +16,5 @@ class TestSearchManager(BaseSearchManager):
     '''
     Менеджер управления поиском комнат в CoreAPI
     '''
-    URI = '/api/search/room/'
-    AGENT_UUID = '50834ad3-cffa-4d97-ba0a-7c8145edced0'
+    URI = '/api/search/reservation/'
+    filters = ['multichoice_filter', 'daterange_filter', 'city_filter', ]

@@ -4,7 +4,7 @@ description: Модуль с реализацией aiohttp клиента
 """
 import logging
 import aiohttp
-
+from aiohttp.client_exceptions import ClientResponseError
 
 LOGGER = logging.getLogger(__name__)
 
@@ -18,9 +18,6 @@ async def get(**kwargs) -> dict:
         async with session.get(**kwargs) as response:
             if response.status == 200:
                 result = await response.json()
-            elif response.status in list(range(400, 499)):
-                result = await response.json()
-                raise Exception(f'code: {response.status}, msg: {result}')
             else:
                 result = None
             LOGGER.debug("url запроса: %s", response.url)
@@ -38,9 +35,6 @@ async def post(**kwargs) -> dict:
         async with session.post(**kwargs) as response:
             if response.status == 200:
                 result = await response.json()
-            elif response.status in list(range(400, 499)):
-                result = await response.json()
-                raise Exception(f'code: {response.status}, msg: {result}')
             else:
                 result = None
             LOGGER.debug("url запроса: %s", response.url)
@@ -58,9 +52,6 @@ async def put(**kwargs) -> dict:
         async with session.put(**kwargs) as response:
             if response.status == 200:
                 result = await response.json()
-            elif response.status in list(range(400, 499)):
-                result = await response.json()
-                raise Exception(f'code: {response.status}, msg: {result}')
             else:
                 result = None
             LOGGER.debug("url запроса: %s", response.url)
@@ -76,8 +67,6 @@ async def delete(**kwargs) -> dict:
     async with aiohttp.ClientSession() as session:
         async with session.delete(**kwargs) as response:
             if response.status == 200:
-                result = await response.json()
-            elif response.status in list(range(400, 499)):
                 result = await response.json()
             else:
                 result = None

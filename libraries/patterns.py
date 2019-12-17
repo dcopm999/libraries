@@ -2,7 +2,9 @@
 package: libraries
 description: Классы с паттернами
 """
+import logging
 
+logger = logging.getLogger(__name__)
 
 class Singleton:  # pylint: disable=too-few-public-methods
     '''
@@ -39,9 +41,6 @@ class ItemManager:
     def __iter__(self):
         return map(lambda item: item, self.items)
 
-    # def __repr__(self):
-    #    return repr([item for item in self.items])
-
 
 class ChainHandlerMixin:
     '''
@@ -51,44 +50,13 @@ class ChainHandlerMixin:
     передавать запрос по цепочке потенциальных обработчиков, 
     пока один из них не обработает запрос
     '''
-    def __init__(self, *args, **kwargs):
-        super(ChainHandlerMixin, self).__init__(*args, **kwargs)
-        
-    def search(self, data:dict) -> str:
+
+    def search(self, data:dict) -> list:
         """
         data: dict form search form
         """
-        params = dict()
-        filters = [getattr(self, item) for item in self.filters]
-        for item in filters:
-            result = item(data)
-            if result:
-                params.update(result)
-        self.params = params
-        print(self.params)
+        self.params = {}
+        logger.debug('ChainHandlerMixin.search data: %s' % data)
+        self.params = self.filters.handle(data, result={})
+        logger.debug('ChainHandlerMixin.search params: %s' % self.params)
         return self.get_list()
-
-    def multichoice_filter(self, data:dict) -> dict:
-        result = dict()
-        for key, value in data.items():
-            if isinstance(value, list):
-                result_key = f'{key}__in'
-                for item in value:
-                    if value.index(item) == 0:
-                        result_value = f'{item}'
-                    else:
-                        result_value += f'__{item}'
-                result[result_key] = result_value
-        return result
-
-    def daterange_filter(self, data:dict) -> dict:
-        if data.get('date_start'):
-            key = 'date__range'
-            date_start = data.get('date_start')
-            date_end = data.get('date_end')
-            value = f'{date_start}__{date_end}'
-            return {key: value}
-
-    def city_filter(self, data:dict) -> dict:
-        if data.get('city'):
-            return {'city': data.get('city')}

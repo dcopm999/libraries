@@ -22,7 +22,7 @@ with open(os.path.join(os.path.dirname(__file__), 'README.rst')) as readme:
 
     setup(
         name='libraries',
-        version='0.1.1',
+        version='0.1.2',
         packages=['libraries'],
         include_package_data=True,
         license='BSD License',

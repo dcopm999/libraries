@@ -10,11 +10,11 @@ LOGGER = logging.getLogger(__name__)
 
 class BaseFilterHandler:
     _next_handler = None
-    
+
     def set_next(self, handler):
         self._next_handler = handler
         return handler
-    
+
     def handle(self, data:dict, result:dict):
         if self._next_handler:
             LOGGER.debug('BaseFilterHandler.handle data: %s' % data)
@@ -39,9 +39,11 @@ class SubscribeFromFilterHandler(BaseFilterHandler):
         proc_keys = dict(agent = None)
         manager = SubscribeSearchManager()
         manager.params = dict(contragent_from=data.get('agent'), is_approved='true')
-        for item in manager.get_list():
-            hotel_list.append(item.get('contragent_to'))
-
+        if not manager.get_list():
+            hotel_list = ['None', ]
+        else:
+            for item in manager.get_list():
+                hotel_list.append(item.get('contragent_to'))
         self.del_key(proc_keys, data)
         data.update({'hotel': hotel_list})
         LOGGER.debug('SubscribeFromFilterHandler result: %s ' % result)
@@ -88,12 +90,11 @@ class MultichoiceFilterHandler(BaseFilterHandler):
                 result[key] = value[0]
             elif isinstance(value, list):
                 proc_keys[key] = None
-    
         self.del_key(proc_keys, data)
         LOGGER.debug('MultichoiceFilterHandler.handle result: %s ' % result)
         return super(MultichoiceFilterHandler, self).handle(data, result)
-    
-        
+
+
 class StrFilterHandler(BaseFilterHandler):
 
     def handle(self, data:dict, result:dict=dict()) ->dict:
@@ -106,7 +107,7 @@ class StrFilterHandler(BaseFilterHandler):
         self.del_key(proc_keys, data)
         LOGGER.debug('result: %s ' % result)
         return super().handle(data, result)
-            
+
 
 class BooleanFilterHandler(BaseFilterHandler):
 
@@ -135,12 +136,19 @@ class TestSearchManager(BaseSearchManager):
     filters = BaseFilterHandler()
     filters.set_next(SubscribeFromFilterHandler()).set_next(MultichoiceFilterHandler()).set_next(DaterangeFilterHandler()).set_next(StrFilterHandler())
 
-    
+
 class SubscribeSearchManager(BaseSearchManager):
     '''
     Менеджер для поиска по подпискам
     '''
     URI = '/api/search/subscribe/'
+
+
+class ReservationSearchManager(BaseSearchManager):
+    '''
+    Менеджер для поиска по броням
+    '''
+    URI = '/api/search/reservation/'
 
 
 if __name__ == '__main__':
@@ -159,5 +167,3 @@ if __name__ == '__main__':
     print(dir(base_filter))
     base_filter.handle(data)
     print(base_filter.result)
-
-    

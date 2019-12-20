@@ -39,9 +39,12 @@ class SubscribeFromFilterHandler(BaseFilterHandler):
         proc_keys = dict(agent = None)
         manager = SubscribeSearchManager()
         manager.params = dict(contragent_from=data.get('agent'), is_approved='true')
-        for item in manager.get_list():
-            hotel_list.append(item.get('contragent_to'))
-
+        #if manager.get_list() != list():
+        if not manager.get_list():
+            hotel_list = ['None', ]
+        else:
+            for item in manager.get_list():
+                hotel_list.append(item.get('contragent_to'))
         self.del_key(proc_keys, data)
         data.update({'hotel': hotel_list})
         LOGGER.debug('SubscribeFromFilterHandler result: %s ' % result)
@@ -141,6 +144,13 @@ class SubscribeSearchManager(BaseSearchManager):
     Менеджер для поиска по подпискам
     '''
     URI = '/api/search/subscribe/'
+
+
+class ReservationSearchManager(BaseSearchManager):
+    '''
+    Менеджер для поиска по броням
+    '''
+    URI = '/api/search/reservation/'
 
 
 if __name__ == '__main__':

@@ -49,6 +49,7 @@ class BaseManager(ItemManager):
         ))
         self.items = result.get('result')
         self.code = result.get('code')
+        self.count = result.get('count')
         return self.items
 
     def get_item_by_uuid(self, uuid) -> dict:

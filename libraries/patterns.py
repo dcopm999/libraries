@@ -6,6 +6,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+
 class Singleton:  # pylint: disable=too-few-public-methods
     '''
     Реализация паттерна проектирования Singleton
@@ -40,6 +41,9 @@ class ItemManager:
 
     def __iter__(self):
         return map(lambda item: item, self.items)
+
+    def __repr__(self):
+        return repr(self.items)
 
 
 class ChainHandlerMixin:

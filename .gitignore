@@ -12,6 +12,7 @@ pylint.log
 
 *#
 *~
+*.c
 *.pyc
 __pycache__
 static/

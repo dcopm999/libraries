@@ -1,2 +1,2 @@
 aiohttp>=3.5.4
-Django>=2.2.5
+Django>=2.2.10,<3

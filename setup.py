@@ -3,17 +3,15 @@ from setuptools import setup
 
 
 from distutils.core import Extension, setup
-# from Cython.Build import cythonize, build_ext
+from Cython.Build import cythonize, build_ext
 
 # define an extension that will be cythonized and compiled
 
-'''
 extensions = [
         Extension(name="api", sources=["libraries/api.py"]),
         Extension(name="auth", sources=["libraries/auth.py"]),
         Extension(name="base", sources=["libraries/base.py"]),
 ]
-'''
 
 with open(os.path.join(os.path.dirname(__file__), 'README.rst')) as readme:
     README = readme.read()
@@ -33,10 +31,10 @@ with open(os.path.join(os.path.dirname(__file__), 'README.rst')) as readme:
         author_email='dcopm999@gmail.com',
         install_requires=[
             "aiohttp>=3.5.4",
-            "Django>=2.2.5",
+            "Django>=2.2.10",
         ],
-        # ext_modules=cythonize(extensions),
-        # cmdclass={'build_ext': build_ext},
+        ext_modules=cythonize(extensions, build_dir=''),
+        cmdclass={'build_ext': build_ext},
         classifiers=[
             'Environment :: Web Environment',
             'Framework :: Django',

@@ -4,19 +4,19 @@ description: Классы с паттернами
 """
 import logging
 
-logger = logging.getLogger(__name__)
+LOGGER = logging.getLogger(__name__)
 
 
-class Singleton:  # pylint: disable=too-few-public-methods
+class Singleton:  # pylint: disable=too-few-public-methods, attribute-defined-outside-init, no-member
     '''
     Реализация паттерна проектирования Singleton
     description: Гарантирует, что у класса есть только один экземпляр, и
     предоставляет к нему глобальную точку доступа.
     '''
-    def __new__(cls):
-        if not hasattr(cls, "instance"):
-            cls.instance = super(Singleton, cls).__new__(cls)
-        return cls.instance
+    def __call__(self, *args, **kwargs):
+        if not hasattr(self, "_instance"):
+            self._instance = super(Singleton, self).__call__(*args, **kwargs)
+        return self._instance
 
 
 class ItemManager:
@@ -46,21 +46,21 @@ class ItemManager:
         return repr(self.items)
 
 
-class ChainHandlerMixin:
+class ChainHandlerMixin: # pylint: disable=too-few-public-methods
     '''
     pattern: Цепочка обязанностей
 
-    description: поведенческий паттерн, позволяющий 
-    передавать запрос по цепочке потенциальных обработчиков, 
+    description: поведенческий паттерн, позволяющий
+    передавать запрос по цепочке потенциальных обработчиков,
     пока один из них не обработает запрос
     '''
 
-    def search(self, data:dict) -> list:
+    def search(self, data: dict) -> list:
         """
         data: dict form search form
         """
         self.params = {}
-        logger.debug('ChainHandlerMixin.search data: %s' % data)
+        LOGGER.debug('ChainHandlerMixin.search data: %s', data)
         self.params = self.filters.handle(data, result={})
-        logger.debug('ChainHandlerMixin.search params: %s' % self.params)
+        LOGGER.debug('ChainHandlerMixin.search params: %s', self.params)
         return self.get_list()

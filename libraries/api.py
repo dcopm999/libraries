@@ -1,6 +1,7 @@
+# coding: utf-8
 """
 package: libraries
-description: Модуль с реализацией aiohttp клиента
+description: Emplement asyn methonds for ReST API
 """
 import logging
 import aiohttp
@@ -46,16 +47,22 @@ async def post(**kwargs) -> dict:
         async with session.post(**kwargs) as response:
             if response.status == 200:
                 result = await response.json()
+                if result.get('results') is not None:
+                    count = result.get('count')
+                    result = result.get('results')
+
+            elif response.status == 401:
+                result = await response.json()
+                
             elif response.status in list(range(400, 499)):
                 result = await response.json()
                 LOGGER.error(f'url: {response}, code: {response.status}, msg: {result}')
                 raise ClientResponseError(
                     request_info=response.request_info,
                     history=response.history, status=response.status,
-                    message=response, headers=response.headers,
-                    result=result)
+                    message=response, headers=response.headers,)
             else:
-                result = None
+                result = await response.json()
             LOGGER.debug("url запроса: %s", response.url)
             LOGGER.debug("код ответа: %d", response.status)
             LOGGER.debug("результат ответа от сервера: %s", result)

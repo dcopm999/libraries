@@ -1,3 +1,8 @@
+# coding: utf-8
+'''
+package: libraries
+description: utils
+'''
 import cProfile
 
 
